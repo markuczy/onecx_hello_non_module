@@ -1,0 +1,16 @@
+<table>
+  <thead>
+    <tr>
+      <th>Greeting ID</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let greeting of greetings">
+      <td>{{ greeting.id }}</td>
+      <td>
+        <button [routerLink]="['/greeting', greeting.id]">View Details</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
