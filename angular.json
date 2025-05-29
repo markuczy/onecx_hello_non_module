@@ -15,23 +15,26 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:application",
+          "builder": "ngx-build-plus:browser",
           "options": {
+            "main": "src/main.ts",
             "outputPath": "dist/hello_non_module",
             "index": "src/index.html",
-            "browser": "src/main.ts",
             "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
               {
                 "glob": "**/*",
-                "input": "public"
-              },
-              "src/assets"
+                "input": "src/assets",
+                "output": "assets"
+              }
             ],
             "styles": ["src/styles.scss"],
-            "scripts": []
+            "scripts": [
+              "node_modules/@webcomponents/webcomponentsjs/webcomponents-bundle.js"
+            ],
+            "extraWebpackConfig": "webpack.config.js"
           },
           "configurations": {
             "production": {
@@ -47,7 +50,8 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "extraWebpackConfig": "webpack.prod.config.js"
             },
             "development": {
               "optimization": false,
@@ -58,19 +62,30 @@
           "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-devkit/build-angular:dev-server",
+          "builder": "ngx-build-plus:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "hello_non_module:build:production"
+              "buildTarget": "hello_non_module:build:production",
+              "extraWebpackConfig": "webpack.prod.config.js"
             },
             "development": {
               "buildTarget": "hello_non_module:build:development"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "development",
+          "options": {
+            "buildTarget": "hello_non_module:build",
+            "port": 4200,
+            "publicHost": "http://localhost:4200",
+            "extraWebpackConfig": "webpack.config.js"
+          }
         },
         "extract-i18n": {
-          "builder": "@angular-devkit/build-angular:extract-i18n"
+          "builder": "ngx-build-plus:extract-i18n",
+          "options": {
+            "buildTarget": "hello_non_module:build",
+            "extraWebpackConfig": "webpack.config.js"
+          }
         },
         "test": {
           "builder": "@angular-devkit/build-angular:karma",
